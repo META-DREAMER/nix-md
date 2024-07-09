@@ -1,6 +1,8 @@
 {
 4	  inputs = {
 5	    nixpkgs.url = "github:NixOS/nixpkgs";
+      inputs.disko.url = "github:nix-community/disko";
+      inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
 6	  };
 7	
 8	  outputs = { self, nixpkgs }: {
