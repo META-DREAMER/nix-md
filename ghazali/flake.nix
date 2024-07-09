@@ -9,6 +9,9 @@
         system = "x86_64-linux";
         modules = [
           disko.nixosModules.disko
+          {
+              networking.hostName = "ghazali"; # Define your hostname.
+          }
           ./configuration.nix
         ];
       };
