@@ -12,3 +12,8 @@ disko install:
 ```shell
 sudo nix run 'github:nix-community/disko#disko-install' --extra-experimental-features "nix-command flakes"  --  --write-efi-boot-entries --flake '.#ghazali' --disk disk1 /dev/nvme1n1
 ```
+
+rebuild:
+```shell
+nixos-rebuild switch --fast --flake ./#ghazali --target-host ghazali --build-host ghazali --option eval-cache false
+```

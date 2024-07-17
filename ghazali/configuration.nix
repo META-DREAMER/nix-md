@@ -4,11 +4,20 @@
 
 { config, lib, pkgs, modulesPath, ... }:
 
+let
+  hostname = "ghazali";
+
+  username = "md";
+
+  jellyfinDomain = "jellyfin.mdhq.xyz";
+  jellyfinPort = 8096;
+in 
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
+    ./hardware-configuration.nix
   ];
   # Kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -19,16 +28,56 @@
 
   services.openssh.enable = true;
 
+  networking.hostName = hostname;
+  # Enable networking
+  networking.networkmanager.enable = true;
+
+  # Open ports in the firewall.
+  networking.firewall.allowedTCPPorts = [ ];
+  networking.firewall.allowedUDPPorts = [ ];
+  
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
      curl
      gitMinimal
   ];
-  
+
+  services.jellyfin = {
+    enable = true;
+    # Automatically allows jellyfin's port through the firewall
+    openFirewall = true;
+  };
+
+  services.nginx = {
+    enable = true; 
+    virtualHosts.${jellyfinDomain} = {
+      locations."/" = {
+        # forward port 8096 where jellyfin runs on
+        proxyPass = "http://127.0.0.1:${jellyfinPort}";
+      };
+    };
+  };
+
+  # Define a user named after our username variable above
+  users.users.${username} = {
+    isNormalUser = true;
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [
+      
+    ];
+    openssh.authorizedKeys.keys = [
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCUpK4ajlqDPu2mY1XBNYMSC6MqxdwQanuQJ3fyLzmwgaO8xb+rdbIvyIcvuuV61H2SG6IP3tPigevXfV77iJpf0fhvfNckRfQpz1GRcbdd6wQUCXR5My55kLj2MFNk37yqcqhIRPkQVMQ+ZUjKeICoDkqryoRRtLEzCayNJK3WII+lLpL30SbHTXzUQjcTbHAqOhvZiSn5SeSVBWPispPEwPjV4Ym1EsneHKqg+6MLrDZ3Up+nkzpune97Q7URTzqLj2WvQEe7Q3xaYkmImBCldhPfHkZ4YgcxWtng5hZtAeEDFJ2+L50M6DwfXeJPowxq+Ovkia1jmeAML1dxl7vyERAoUswJhiosuJzesxJkCf6RyfrhDzqI1CSXm9hr4i3r7ivhlk3B1VbbauaqTARZpjB0nYl6pI9ttHhPoqpdjDo4s49EI3pLM0XHa3ss0JCpQtpN69k9gLJ5jcbAi2HCc3VJjf9Kc2X+LE71oBe2g2mSj8tUuGcCpExBR6W9fF0= h@md.wtf"
+    ]
+  };
+
+
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCUpK4ajlqDPu2mY1XBNYMSC6MqxdwQanuQJ3fyLzmwgaO8xb+rdbIvyIcvuuV61H2SG6IP3tPigevXfV77iJpf0fhvfNckRfQpz1GRcbdd6wQUCXR5My55kLj2MFNk37yqcqhIRPkQVMQ+ZUjKeICoDkqryoRRtLEzCayNJK3WII+lLpL30SbHTXzUQjcTbHAqOhvZiSn5SeSVBWPispPEwPjV4Ym1EsneHKqg+6MLrDZ3Up+nkzpune97Q7URTzqLj2WvQEe7Q3xaYkmImBCldhPfHkZ4YgcxWtng5hZtAeEDFJ2+L50M6DwfXeJPowxq+Ovkia1jmeAML1dxl7vyERAoUswJhiosuJzesxJkCf6RyfrhDzqI1CSXm9hr4i3r7ivhlk3B1VbbauaqTARZpjB0nYl6pI9ttHhPoqpdjDo4s49EI3pLM0XHa3ss0JCpQtpN69k9gLJ5jcbAi2HCc3VJjf9Kc2X+LE71oBe2g2mSj8tUuGcCpExBR6W9fF0= h@md.wtf"
   ];
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
