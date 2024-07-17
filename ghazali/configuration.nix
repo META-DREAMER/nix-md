@@ -9,8 +9,8 @@ let
 
   username = "md";
 
-  jellyfinDomain = "jellyfin.mdhq.xyz";
-  jellyfinPort = 8096;
+  jellyfinDomain = "jellyfin.local";
+  jellyfinPort = "8096";
 in 
 {
   imports = [
