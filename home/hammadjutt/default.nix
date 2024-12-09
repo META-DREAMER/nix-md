@@ -3,10 +3,7 @@
   home.stateVersion = "23.11";
   
   # Let Home Manager manage itself
-  programs.home-manager = {
-    enable = true;
-    backupFileExtension = "backup";
-  };
+  programs.home-manager.enable = true;
 
   # Packages that should be installed to the user profile
   home.packages = with pkgs; [
