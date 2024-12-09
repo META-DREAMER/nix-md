@@ -56,7 +56,26 @@
     '';
 
     plugins = [
-      # You can add fish plugins here if needed
+      # Kubectl completions
+      {
+        name = "fish-kubectl-completions";
+        src = pkgs.fetchFromGitHub {
+          owner = "evanlucas";
+          repo = "fish-kubectl-completions";
+          rev = "ced676392575d618d8b80b3895cdc3159be3f628";  # Latest commit as of early 2024
+          sha256 = "sha256-OYiYTW+g71vD9NWOcX1i2/TaQfAg+c2dJZ5ohwWSDCc=";
+        };
+      }
+      # Nix environment support
+      {
+        name = "nix-env";
+        src = pkgs.fetchFromGitHub {
+          owner = "lilyball";
+          repo = "nix-env.fish";
+          rev = "7b65bd228429e852c8fdfa07601159130a818cfa";  # Latest commit as of early 2024
+          sha256 = "sha256-RG/0rfhgq6aEKNZ0XwIqOaZ6K5S4+/Y5EEMnIdtfPhk=";
+        };
+      }
     ];
   };
 
@@ -69,5 +88,11 @@
   # Additional environment variables can be set here
   home.sessionVariables = {
     EDITOR = "nano";
+  };
+
+  # Add fnm (Fast Node Manager) if you're using it
+  programs.fnm = {
+    enable = true;
+    enableFishIntegration = true;
   };
 } 
