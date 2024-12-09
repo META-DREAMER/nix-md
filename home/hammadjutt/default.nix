@@ -32,6 +32,9 @@
     interactiveShellInit = ''
       # iTerm2 integration
       test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish ; or true
+      
+      # FNM integration
+      fnm env --use-on-cd | source
     '';
 
     shellInit = ''
@@ -89,10 +92,4 @@
   home.sessionVariables = {
     EDITOR = "nano";
   };
-
-  # Add fnm (Fast Node Manager) if you're using it
-  programs.fnm = {
-    enable = true;
-    enableFishIntegration = true;
-  };
-} 
+}  
