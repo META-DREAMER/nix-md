@@ -32,4 +32,11 @@
   # this is required if you want to use darwin's default shell - zsh
   programs.zsh.enable = true;
 
+  # Enable and configure fish shell
+  programs.fish = {
+    enable = true;
+    shellAliases = {
+      dr = "darwin-rebuild switch --flake .#";  # Quick rebuild command
+    };
+  };
 }
