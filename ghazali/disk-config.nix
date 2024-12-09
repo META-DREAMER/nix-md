@@ -6,7 +6,7 @@
       device = lib.mkDefault "/dev/nvme0n1";
       type = "disk";
       content = {
-        type = "gpt";
+        type = "gpt";f
         partitions = {
           esp = {
             name = "ESP";
