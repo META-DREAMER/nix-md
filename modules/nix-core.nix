@@ -5,12 +5,15 @@
     # enable flakes globally
     experimental-features = ["nix-command" "flakes"];
 
-    # substituers that will be considered before the official ones(https://cache.nixos.org)
+    # Override all substituters to ensure no old ones are used
     substituters = [
       "https://cache.nixos.org"                     # Official cache
       "https://nix-community.cachix.org"            # Popular community cache
       "https://cache.garnix.io"                     # Fast mirror, good for flakes
     ];
+    # Extra settings to ensure substituter behavior
+    extra-substituters = [ ];                       # Explicitly empty any extra substituters
+    trusted-substituters = [ ];                     # Explicitly empty trusted substituters
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="  # Official cache key
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="  # Community cache key
