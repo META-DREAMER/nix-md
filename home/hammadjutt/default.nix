@@ -18,10 +18,13 @@
   };
 
   # Shell configuration (fish)
-#   programs.fish = {
-#     enable = true;
-#     interactiveShellInit = ''
-#       # Your fish shell customizations here
-#     '';
-#   };
+  programs.fish = {
+    enable = true;
+    shellAliases = {
+      dr = "darwin-rebuild switch --flake .#";  # Quick rebuild command
+    };
+    interactiveShellInit = ''
+      # Your fish shell customizations here
+    '';
+  };
 } 
