@@ -1,5 +1,5 @@
 # Home Manager configuration
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   home.stateVersion = "23.11";
   
   # Let Home Manager manage itself
