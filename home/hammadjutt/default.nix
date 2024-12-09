@@ -44,18 +44,6 @@
       
       # Kubeconfig setup
       set -gx KUBECONFIG (find ~/.kube/clusters -type f ! -name '.DS_Store' | gsed ':a;N;s/\n/:/;ba')
-      
-      # Foundry
-      set -gx PATH $PATH /Users/hammadjutt/.foundry/bin
-      
-      # Bun
-      set -gx BUN_INSTALL "$HOME/.bun"
-      set -gx PATH $BUN_INSTALL/bin $PATH
-      
-      # LLVM configuration
-      set -gx PATH /opt/homebrew/opt/llvm/bin $PATH
-      set -gx LLVM_CONFIG_PATH /opt/homebrew/opt/llvm/bin/llvm-config
-      set -gx LIBCLANG_PATH /opt/homebrew/opt/llvm/lib
     '';
 
     plugins = [
@@ -88,8 +76,18 @@
     enableFishIntegration = true;
   };
 
-  # Additional environment variables can be set here
+  # Path management
+  home.sessionPath = [
+    "/opt/homebrew/opt/llvm/bin"
+    "${config.home.homeDirectory}/.foundry/bin"
+    "${config.home.homeDirectory}/.bun/bin"
+  ];
+
+  # Additional environment variables
   home.sessionVariables = {
     EDITOR = "nano";
+    LLVM_CONFIG_PATH = "/opt/homebrew/opt/llvm/bin/llvm-config";
+    LIBCLANG_PATH = "/opt/homebrew/opt/llvm/lib";
+    BUN_INSTALL = "${config.home.homeDirectory}/.bun";
   };
 }  
