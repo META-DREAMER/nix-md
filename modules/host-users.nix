@@ -1,5 +1,4 @@
-
-{ hostname, username, ... }:
+{ hostname, username, pkgs, ... }:
 
 #############################################################
 #
@@ -15,7 +14,10 @@
   users.users."${username}"= {
     home = "/Users/${username}";
     description = username;
+    shell = pkgs.fish;
   };
+
+  environment.shells = with pkgs; [ fish ];
 
   nix.settings.trusted-users = [ username ];
 }
