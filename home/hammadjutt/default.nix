@@ -39,7 +39,6 @@
 
     shellInit = ''
       # Environment variables
-      set -gx EDITOR nano
       set -gx SOPS_AGE_KEY_FILE ~/.config/sops/age/keys.txt
       
       # Kubeconfig setup
