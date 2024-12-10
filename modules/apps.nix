@@ -49,6 +49,7 @@
     # TODO Feel free to add your favorite apps here.
     casks = [
       # "google-chrome"
+      "wezterm"
     ];
   };
 }
