@@ -10,6 +10,7 @@
     starship    # For shell prompt
     zoxide      # For smart directory jumping
     llvm        # For LLVM toolchain
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })  # JetBrains Mono Nerd Font
   ];
 
   # Git configuration
@@ -24,7 +25,7 @@
     enable = true;
     enableFishIntegration = true;
   };
-
+  
   # Shell configuration (fish)
   programs.fish = {
     enable = true;
