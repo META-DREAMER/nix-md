@@ -10,7 +10,7 @@
     starship    # For shell prompt
     zoxide      # For smart directory jumping
     llvm        # For LLVM toolchain
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })  # JetBrains Mono Nerd Font
+    nerd-fonts.jetbrains-mono  # JetBrains Mono Nerd Font
   ];
 
   # Git configuration
